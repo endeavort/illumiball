@@ -17,16 +17,32 @@ public class GravityController : MonoBehaviour
     void Update()
     {
         Vector3 vector = new Vector3();
-        vector.x = Input.GetAxis("Horizontal");
-        vector.z = Input.GetAxis("Vertical");
-
-        if (Input.GetKey("z"))
+        if (Application.isMobilePlatform)
         {
-            vector.y = 1.0f;
+            vector.x = Input.acceleration.x;
+            vector.z = Input.acceleration.y;
+            if (Input.GetMouseButton(0))
+            {
+                vector.y = 1.0f;
+            }
+            else
+            {
+                vector.y = -1.0f;
+            }
         }
         else
         {
-            vector.y = -1.0f;
+            vector.x = Input.GetAxis("Horizontal");
+            vector.z = Input.GetAxis("Vertical");
+
+            if (Input.GetKey("z"))
+            {
+                vector.y = 1.0f;
+            }
+            else
+            {
+                vector.y = -1.0f;
+            }
         }
 
         Physics.gravity = Gravity * vector.normalized * gravityScale;
